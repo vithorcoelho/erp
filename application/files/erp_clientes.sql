@@ -1,0 +1,10 @@
+CREATE TABLE `erp_clientes` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `cpf` varchar(255) NOT NULL,
+  `cidade` varchar(255) NOT NULL,
+  `endereco` varchar(255) NOT NULL,
+  `telefone` varchar(15) NOT NULL,
+  `celular` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

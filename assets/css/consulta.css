@@ -1,0 +1,140 @@
+body {
+	background: #fff;
+}
+.contentconsulta{
+	display: flex;
+	background: #fff;
+}
+.boxleftconsulta {
+	width: 50%;
+	height: 100%;
+	padding: 30px 20px;
+}
+.boxrightconsulta {
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(to right, #f1194b 0%, #bb197a 100%) !important;
+	position: fixed;
+	right: 0;
+}
+.boxrightconsulta .box{
+	width: 540px;
+	margin-left: 7%;
+	display: block;
+	color: #fff;
+	letter-spacing: -1px;
+	padding: 30px 50px;
+}
+.boxrightconsulta h2 {
+	text-transform: uppercase;
+	font-size: 44px;
+	color: #fff;
+	font-weight: 700;
+	letter-spacing: -2px;
+}
+.boxrightconsulta .box ul li{
+	display: block;
+	font-size: 20px;
+	padding: 7px 0;
+}
+.boxleftformulario {
+	max-width: 450px;
+	display: block;
+	padding: 5px;
+	margin: 0 auto;
+}
+.boxleftformulario h2{
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: 40px;
+	letter-spacing: -1px;
+}
+.boxleftformulario h3{
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: 25px;
+	letter-spacing: -1px;
+}
+.boxleftformulario .btn-primary {
+	width: 100%;
+	padding: 20px;
+	background: linear-gradient(to right, #da2977 0%, #ec5226 100%);
+	color: #fff;
+}
+.boxleftformulario .btn-primary:hover {
+	background: linear-gradient(to right, #ab2560 0%, #d86342 100%) !important;
+	transition: all .7s;
+}
+.select-cidades, .select-cidades:focus{
+	border: 1px solid #afaaaa;
+	border-radius: 0;
+	height: 70px;
+	letter-spacing: -1px;
+}
+.group { 
+  position:relative; 
+  margin-bottom:20px; 
+}
+input 				{
+  font-size:18px;
+  padding:30px 10px 10px 20px;
+  display:block;
+  width:100%;
+  border:1px solid #afaaaa;
+}
+input:focus 		{ outline:none; }
+
+/* LABEL ======================================= */
+label 				 {
+  color:#afaaaa; 
+  font-size:17px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:22px;
+  top:22px;
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+  letter-spacing: -0.5px;
+}
+
+/* active state */
+input:focus ~ label, input:valid ~ label 		{
+  top:13px;
+  font-size:12px;
+  color:#5264AE;
+}
+
+/* BOTTOM BARS ================================= */
+.bar 	{ position:relative; display:block; width:100%; }
+.bar:before, .bar:after 	{
+  content:'';
+  height:2px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background:#5264AE; 
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+  width:50%;
+}
+@media screen and (max-width: 900px) {
+  .boxrightconsulta {
+  	display: none;
+  }
+  .boxleftconsulta {
+  	width:100%;
+  }
+}

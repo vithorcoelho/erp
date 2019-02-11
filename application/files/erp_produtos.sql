@@ -1,0 +1,9 @@
+CREATE TABLE `erp_produtos` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `custo` varchar(255) NOT NULL,
+  `preco` varchar(255) NOT NULL,
+  `img` varchar(55) NOT NULL,
+  `ref` varchar(11) NOT NULL,
+  `loja` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

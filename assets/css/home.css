@@ -1,0 +1,52 @@
+h1, h2, h3, h4, h5{
+	color: #fff !important;
+	z-index: 2;
+}
+a {
+	color:#fff;
+}
+.opacity {
+	position: absolute;
+	width: 140%;
+	height: 100%;
+	background: #200925;
+	opacity: 0.9;
+}
+.logo {
+	position: absolute;
+	top: 50px;
+	left: 10%;
+
+}
+.logo h3{
+	color: #fff !important;
+}
+.empresa {
+    display: inline-block;
+    margin: 10px 15px;
+    position: absolute;
+}
+.entrar{
+	position: absolute;
+	top: 65px;
+	right: 10%;
+}
+.entrar a{
+	color: #fff !important;
+}
+button.criar {
+	border-radius: 100px !important;
+}
+.titulo {
+	max-width: 800px;
+	text-align: center;	
+	margin: 40px 0;
+	color: #fff;
+	padding: 30px;
+	font-size: 35px;
+    font-weight: 700;
+}
+.ks-footer{
+	color: #fff;
+	z-index: 4
+}

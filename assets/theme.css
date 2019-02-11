@@ -1,0 +1,234 @@
+body {
+	background: #cccccc2e;
+}
+b, strong{
+  font-weight: 500;
+}
+.ks-navbar{
+	position: fixed;
+	width: 100%;
+	margin: 0 0 50px 0;
+	z-index: 999;
+}
+main{
+	margin-top: 50px;
+}
+.ks-navbar-menu .nav-link{
+	padding: 15px 20px !important;
+    height: 0px !important;
+    border-radius: 50px;
+    border: none;
+}
+ .ks-navbar .nav-item.show .dropdown-menu{
+ 	border-radius: 4px !important;
+ }
+ .ks-navbar .nav-item.show .dropdown-menu .dropdown-item{
+ 	font-weight: 500 !important;
+ }
+
+.loader-lg, .loader:after{
+	width: 5em;
+	height: 5em;
+	border-radius: 50%;
+}F
+.loader-lg {
+	position: absolute;
+	top: 38%;
+	left: 47%;
+}
+.loader-sm, .loader:after{
+	width: 2em;
+	height: 2em;
+	border-radius: 50%;
+}
+
+.loader-sm {
+position: relative;
+}
+.loader,
+}
+.loader:after {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+  z-index: 9999;
+}
+.loader {
+  margin: 60px auto;
+  font-size: 10px;
+  text-indent: -9999em;
+  border-top: .2em solid rgba(90,56,160, 0.2);
+  border-right: .2em solid rgba(90,56,160, 0.2);
+  border-bottom: .2em solid rgba(90,56,160, 0.2);
+  border-left: .2em solid #5a38a0;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 .8s infinite linear;
+  animation: load8 .8s infinite linear;
+  z-index: 9999;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+#msg{
+  position: absolute;
+  right: 0;
+  top: 40%;
+  z-index: 9999;
+}
+#msgflutuante{
+position: fixed;
+    right: -400px;
+    width: 275px;
+    z-index: 99;
+    background: #fefefe;
+    padding: 25px 0px 25px 0px;
+    /* color: #fff; */
+    font-size: 12px;
+    box-shadow: 0px 0px 15px #00000059
+}
+.show-msg{
+  display: block;
+  right: 0 !important;
+  transition: right .2s;
+}
+.hide-msg{
+  right: -250px !important;
+  transition: right .2s;
+}
+#msgflutuante i{
+font-size: 30px;
+    position: absolute;
+margin-top: -25px;
+    padding: 19px 22px;
+    background: #4caf50;
+    color: #fff;
+}
+#msgflutuante span{
+    margin-left: 90px;
+    font-weight: 500;
+}
+.add-receita-valor{
+  border: none;
+padding: 25px 20px;
+    font-size: 20px;
+  color: #ececec;
+  background: #4caf50;
+  font-weight: 500;
+  height: auto;
+  border-radius: 0;
+}
+.add-despesa-valor{
+  border: none;
+padding: 25px 20px;
+    font-size: 20px;
+  color: #ececec;
+  background: #f56056;
+  font-weight: 500;
+  height: auto;
+  border-radius: 0;
+}
+.add-despesa-valor::placeholder, .add-receita-valor::placeholder{
+   color: #fff !important;
+}
+.add-despesa-valor:focus{
+  background: #f56056;
+  color: #fff;
+}
+.add-receita-valor:focus{
+  background: #4caf50;
+  color: #fff;
+}
+.close-modal {
+  position: absolute;
+    color: #fff !important;
+    right: 35px;
+    top: 30px;
+    font-size: 20px !important;
+}
+.card-footer ul li{
+  display: block;
+  font-weight: 500;
+  color: #8c8c8c;
+}
+.card-footer ul {
+  display: inline-block;
+}
+.painel-fluxo {
+  max-height: 600px;
+  overflow-y: scroll;
+}
+.ks-navbar .nav-item
+{
+  cursor: default;
+}
+.ks-navbar .navbar-brand{
+  height: 50px;
+}
+.ks-navbar .navbar-brand .ks-logo{
+  text-transform: none;
+}
+.ks-navbar{
+  height: 50px;
+}
+.ks-navbar .ks-dropdown-grid-images{
+  height: 25px;
+}
+.ks-navbar .nav-link{
+  height: 50px;
+}
+.ks-navbar>.ks-wrapper>.nav>.ks-navbar-actions>.ks-notifications>.nav-link {
+    padding: 0 15px;
+}
+.filter-options{
+  position: absolute;
+  width: 250px;
+  right: 65px;
+  background: #fff;
+  padding: 20px;
+  z-index: 10;
+  border-radius: 5px;
+  border: 1px solid #a0a0a08f;
+  display: none;
+}
+.search {
+  max-width: 300px;
+}
+.filter{
+  margin: 0 17px;
+}
+@media only screen and (max-width: 600px) {
+  .search {
+  max-width: 33%;
+  }
+  .search-input-hide {
+    display: none !important;
+  }
+  .filter{
+    margin: 0 17px;
+  }
+  #td-email, #td-telefone, #td-endereco {
+    display: none
+  }
+  #th-nome, #th-email, #th-telefone, #th-endereco {
+    display: none;
+  }
+}
