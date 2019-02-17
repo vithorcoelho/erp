@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-include_once './config/config.inc.php';
+include_once './config/database.inc.php';
 
 $active_group = 'default';
 $query_builder = TRUE;
