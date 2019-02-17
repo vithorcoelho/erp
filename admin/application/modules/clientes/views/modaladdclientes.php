@@ -1,6 +1,6 @@
 <div id="loading-modal">
 
-	<?php echo form_open(base_url('clientes/addcliente'), array('autocomplete'=>'off')) ?>
+	<?php echo form_open(base_url('clientes/addcliente'), array('autocomplete'=>'off', 'class'=>'modaladdcliente')) ?>
 
 	<div class="form-modal">
 		<div class="modal-body">

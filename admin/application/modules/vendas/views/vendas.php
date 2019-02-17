@@ -5,26 +5,18 @@
 <?php echo modules::run('header'); ?>
 <?php echo body_open('Vendas'); ?>
 
-	<div class="col-lg-9">
-		<div class="modal fade add-receita add-despesa verfluxo form-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		   	<div class="modal-dialog modal-lg">
-		       	<div class="modal-content">
-					<div id="loading-modal"></div>
-				</div>
+		<div class="modal add-receita form-modal modal-venda" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" style="width: 100%">
+		   	<div class="modal-dialog scroll">
+				<div id="loading-modal"></div>
 			</div>	
 		</div>
 
+	<div class="col-lg-9">
 		<div class="row">
 				<div class="col">
 					<button class="btn btn-success btn-receita" data-toggle="modal" data-target=".add-receita">
                         <span class="">Adicionar pedido</span>
                     </button>
-
-					<a href="<?php echo base_url('pdv') ?>">
-	                    <button class="btn btn-info">
-	                        <span class="">Abrir PDV</span>
-	                    </button>
-	                </a>
 				</div>
 		</div>
 
@@ -38,7 +30,7 @@
 	                        	<th><strong>Data</strong></th>
 	                        	<th><strong>Cliente</strong></th>
 	                        	<th><strong>Cod.</strong></th>
-	                        	<th><strong>Status</strong></th>
+	                        	<th><strong>Situação</strong></th>
 	                        	<th><strong>Total</strong></th>
 	                        </thead>
 	                        <tbody>

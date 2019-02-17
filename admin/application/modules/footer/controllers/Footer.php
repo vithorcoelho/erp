@@ -7,5 +7,8 @@ class Footer extends MX_Controller
 		parent::__construct();
 
 		$this->load->view('footer');
+
+		$this->output->cache(30);
+		
 	}
 }

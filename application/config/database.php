@@ -1,17 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-include_once 'database.inc.php';
+include_once './config/database.inc.php';
 
 $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => $host,
-	'username' => $user,
-	'password' => $pass,
-	'database' => $dbname,
+	'hostname' => HOST,
+	'username' => USER,
+	'password' => PASS,
+	'database' => DBNAME,
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

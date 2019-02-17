@@ -36,6 +36,15 @@ class Vendas_model extends CI_Model
 		return $dados->result();
 	}
 
+	public function countAll($where = null)
+	{
+		if($where)
+		{
+			$this->db->where($where);
+		}
+		return $this->db->count_all($this->tabela);
+	}
+
 	public function deleteVenda($reference)
 	{
 		$this->db->delete($this->tabela, $reference);

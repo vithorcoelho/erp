@@ -30,4 +30,5 @@
 	    </div>
 	</div>
 	<?php echo form_close() ?>
+	<?php $this->load->view('script') ?>
 </div>

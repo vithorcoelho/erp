@@ -1,5 +1,4 @@
 <?php
-
 class Header extends MX_Controller
 {
 	function __construct()
@@ -32,7 +31,7 @@ class Header extends MX_Controller
 			'Clientes'		=> base_url('clientes'),
 			'Produtos'		=> base_url('produtos'),
 			'Vendas'		=> base_url('vendas'),
-			'Caixa' => base_url('fluxo')
+			'Fluxo de caixa' => base_url('fluxo')
 		);
 
 		return $dados;

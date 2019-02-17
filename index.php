@@ -35,29 +35,6 @@
  * @since	Version 1.0.0
  * @filesource
  */
-
-/*
- *---------------------------------------------------------------
- * VERIFICA INSTALAÇÃO
- *---------------------------------------------------------------
- */
-if(is_dir('install'))
-{
-	if(!file_exists('application/config/config.inc.php') AND !file_exists('application/config/database.inc.php'))
-	{
-		header('Location: install');
-		exit;
-	}
-	elseif(file_exists('application/config/config.inc.php') AND file_exists('application/config/database.inc.php'))
-	{
-		echo '<h1>Erro ao acessar</h1>';
-		echo '<p>Apague a pasta install</p>';
-
-		exit;
-	}
-}
-
-
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

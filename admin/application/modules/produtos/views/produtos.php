@@ -6,10 +6,10 @@
 <?php echo body_open('Produtos'); ?>
 
 	<div class="col-lg-9">
-		<div class="modal fade add-receita add-despesa verfluxo form-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal add-receita add-despesa verfluxo form-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		   	<div class="modal-dialog modal-md">
 		       	<div class="modal-content">
-					<div id="loading-modal"></div>
+					<div id="loading-modal"><?php $this->load->view('modal-add-produtos') ?></div>
 				</div>
 			</div>	
 		</div>
@@ -71,10 +71,12 @@
 	                    <table class="table table-striped stacktable small-only listaprodutos">
 	                        <tbody>
 	                        	<thead>
-	                        		<th><strong><label class="custom-control custom-checkbox ks-checkbox ks-no-description">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-indicator"></span>
-                                                    </label></strong></th>
+	                        		<th>
+	                        			<label class="custom-control custom-checkbox ks-no-description">
+                                            <input type="checkbox" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </th>
 	                        		<th><strong>ID</strong></th>
 	                        		<th><strong>Nome</strong></th>
 	                        		<th><strong>Estoque atual</strong></th>
@@ -84,7 +86,7 @@
 	                        	</thead>
 	                        	<?php foreach ($produtos as $v): ?>
 		                        <tr>
-		                        	<td width="5"><label class="custom-control custom-checkbox ks-checkbox ks-no-description">
+		                        	<td width="5"><label class="custom-control custom-checkbox ks-no-description">
                                                         <input type="checkbox" class="custom-control-input">
                                                         <span class="custom-control-indicator"></span>
                                                     </label></td>
@@ -110,6 +112,8 @@
 		 	</div>
 	    </div>
 	</div>
+	
 	<?php echo body_close(); ?>
-	<?php echo modules::run('footer'); ?><?php $this->load->view('script') ?>
+	<?php echo modules::run('footer'); ?>
+	<?php $this->load->view('script') ?>
 </html>

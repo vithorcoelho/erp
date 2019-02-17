@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-<?php $this->load->view('head'); ?>
+<?php  $this->load->view('head'); ?>
 
 <body style="background: url(<?php echo base_url('assets/images/fundo.png') ?>) no-repeat">
     <div class="opacity"></div>
@@ -40,6 +40,6 @@
     </div>
 </body>
 
-<?php $this->load->view('js'); ?>
+<?php // $this->load->view('js'); ?>
 
 </html>

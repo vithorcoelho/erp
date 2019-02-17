@@ -32,7 +32,7 @@
     </div>
 </nav>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
+<script src="<?php echo str_replace('admin/', '', base_url()) ?>libs/jquery/jquery.min.js"></script>
 <script src="<?php echo base_url('assets/scripts/header.js') ?>" type="text/javascript"></script>
 
 <div id="msg">

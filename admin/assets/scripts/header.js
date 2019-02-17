@@ -1,18 +1,3 @@
-function noty(data){
-   $('#msgflutuante span').html(data);
-
-    setTimeout(function() {
-          $('#msgflutuante').addClass('show-msg');
-     }, 0);
-     setTimeout(function() {
-         $('#msgflutuante').addClass('hide-msg');
-     }, 3000);
-     setTimeout(function() {
-         $('#msgflutuante').removeClass('hide-msg');
-         $('#msgflutuante').removeClass('show-msg');
-     }, 3200);
-}
-
 function loadPage(href, content){
     $.ajax({
       url: href,
@@ -46,6 +31,21 @@ function loadmodal(content, href)
             }, 800 );
           }
       });
+}
+function msg_flutuante(texto, tipo, posicao = 'topCenter', tema = 'relax')
+{
+                noty({
+                text: '<strong>'+texto+'</strong>',
+                layout: posicao,
+                theme: tema, // or relax metroui
+                type: tipo,
+                  animation: {
+                      open: 'animated fadeInDown', // Animate.css class names
+                      close: 'animated fadeOutUp', // Animate.css class names
+                      easing: 'swing',
+                  },
+                  timeout: 1000
+              });
 }
 
 

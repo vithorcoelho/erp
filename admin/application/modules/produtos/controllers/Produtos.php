@@ -18,7 +18,7 @@ class Produtos extends MX_Controller
 
 	public function p()
 	{
-		//$this->output->cache(30);
+		$dados['titulo'] = 'Produtos';
 
 		if($this->session->userdata('filterproduto'))
 		{

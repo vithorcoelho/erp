@@ -68,6 +68,7 @@
 			        <input type="submit" class="btn btn-success" value="Salvar">
 			    </div>
 			<?php echo form_close() ?>
+			<?php echo modules::run('footer') ?>
 	</div>
 </div>
 </html>
@@ -82,16 +83,23 @@
        url: '<?php echo base_url('clientes/atualizacliente') ?>',
        type: "POST",
        data: dados,
-       success: function (data) {
+       dataType: 'json',
+       success: function (response) {
        	setTimeout(function(){
-       		noty(data);
-			$('.card-footer input').attr('disabled', false);
-			$('form input').attr('disabled', false);
-			$('.card-footer input').attr('value', 'Salvar');
+       		  $('.card-footer input').attr('disabled', false);
+              $('.card-footer input').attr('value', 'Salvar');
+              $('.form-control').attr('disabled', false);
+            if(response.error)
+            {
+              msg_flutuante(response.error, 'danger');
+            }
+
+            if(response.success)
+            {
+              msg_flutuante(response.success, 'success');
+            }
+
 		}, 800);
-       },
-       error: function (jqXHR, textStatus, errorThrown) {
-           onError(jqXHR, textStatus, errorThrown);
        }
    });
        return false;

@@ -1,23 +1,23 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="<?php echo base_url('assets/'); ?>libs/jquery/jquery.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/responsejs/response.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/tether/js/tether.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/bootstrap/js/bootstrap.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/jscrollpane/jquery.jscrollpane.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/jscrollpane/jquery.mousewheel.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/flexibility/flexibility.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/noty/noty.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/responsejs/response.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/tether/js/tether.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/jscrollpane/jquery.jscrollpane.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/jscrollpane/jquery.mousewheel.js"></script>
+<script src="<?php echo base_url(''); ?>libs/flexibility/flexibility.js"></script>
+<script src="<?php echo base_url(''); ?>libs/noty/noty.min.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="<?php echo base_url('assets/admin/'); ?>scripts/common.min.js"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
 
-<script src="<?php echo base_url('assets/'); ?>libs/d3/d3.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/c3js/c3.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/noty/noty.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/maplace/maplace.min.js"></script>
-<script src="<?php echo base_url('assets/'); ?>libs/select-multi/multi.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/d3/d3.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/c3js/c3.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/noty/noty.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/maplace/maplace.min.js"></script>
+<script src="<?php echo base_url(''); ?>libs/select-multi/multi.min.js"></script>
 
 <script type="text/javascript">
     setTimeout(function() {

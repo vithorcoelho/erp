@@ -40,6 +40,7 @@ main{
 	width: 2em;
 	height: 2em;
 	border-radius: 50%;
+  
 }
 
 .loader-sm {
@@ -243,11 +244,84 @@ padding: 25px 20px;
 body.ks-sidebar-compact .ks-page-container .ks-page>.ks-header, body.ks-sidebar-compact>.ks-container .ks-page>.ks-header{
   width: 100%;
 }
-.campobusca {
-  
-}
 .loader-busca {
   position: absolute;
   top: -35px;
   left: 320px;
+}
+.listaprodutosvendas {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+.listaprodutosvendas a {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e8e8e8;
+    background: #f7f7f7;
+color: #7b7b7b;
+    font-size: 12px;
+    font-weight: 500;
+}
+.listaprodutosvendas a:hover{
+  background: #e4e4e4;
+}
+.scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  -webkit-border-radius: 16px;
+}
+
+.scroll::-webkit-scrollbar-track-piece {
+  background-color: #ffffff;
+  -webkit-border-radius: 3px;
+}
+
+.scroll::-webkit-scrollbar-thumb:vertical {
+  height: 6px;
+  background-color: #ccc;
+  -webkit-border-radius: 3px;
+}
+
+.scroll::-webkit-scrollbar-thumb:horizontal {
+  width: 6px;
+  background-color: #ccc;
+  -webkit-border-radius: 3px;
+}
+.modal-venda .modal-dialog{
+  background: #fff;
+  margin-bottom: 50px;
+}
+.modal-venda .modal-body, .modal-venda .modal-header{
+  padding: 25px 50px;
+}
+@media (min-width: 776px){
+  .modal-venda .modal-dialog{
+       max-width: 65% !important;
+       height: 90%;
+       overflow-y: scroll;
+       border-radius: 5px;
+  }  
+}
+#content_retorno td{
+  border: none;
+  vertical-align: middle;
+  padding: 5px 20px !important;
+}
+.modal-venda .modal-footer {
+  width: 100%;
+  background: #fff;
+  position: fixed;
+  bottom: 75px;
+  margin: -75px 0;
+}
+.boxarquivo{
+  position: absolute;
+  margin-left: -250px;
+  margin-top: 5px;
+  z-index: 999;
+    background: #fff;
+    border: 1px solid #dedede;
+    padding: 15px;
+    border-radius: 5px;
 }

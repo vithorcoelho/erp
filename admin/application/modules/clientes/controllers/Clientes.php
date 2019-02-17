@@ -6,7 +6,7 @@ class Clientes extends MX_Controller
 		parent::__construct();
 
 		$this->load->helper(array('form'));
-		$this->load->library('form_validation');
+		$this->load->library(array('form_validation', 'security'));
 		$this->load->model('Clientes_model');
 
 		login_verify();
@@ -19,10 +19,14 @@ class Clientes extends MX_Controller
 
 	public function p()
 	{
-		$this->output->cache(30);
-
 		$dados['titulo'] = 'Clientes';
-
+		$dados['css'] = array(
+			"libs/datatables-net/media/css/dataTables.bootstrap4.min.css",
+			"libs/datatables-net/extensions/buttons/css/buttons.bootstrap4.min.css",
+			"assets/styles/libs/datatables-net/datatables.min.css",
+			"libs/select2/css/select2.min.css",
+			"assets/styles/libs/select2/select2.min.css");
+		
 		if($this->session->userdata('filtercliente'))
 		{
 			$order = $this->session->userdata('filtercliente');
@@ -72,6 +76,56 @@ class Clientes extends MX_Controller
 	*
 	*	
 	*/
+
+	public function importplanilha()
+	{
+		$dados['titulo'] = 'Importar lista de clientes';
+		
+		if(!empty($_FILES['file']))
+		{
+			//readfile($_FILES['file']['tmp_name']);
+			$handle = fopen($_FILES['file']['tmp_name'], "r");
+			$csv = fgetcsv($handle, 1000, ";");
+
+			$table = array(
+					'nome',
+					'email',
+					'cpf',
+					'cidade',
+					'endereco',
+					'telefone',
+					'celular');
+
+			while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+			{
+				foreach ($data as $key => $value)
+				{
+					$csv[$key] = strtolower($csv[$key]);
+
+					foreach ($table as $t)
+					{
+						if($csv[$key] == strtolower($t))
+						{
+							$array[$csv[$key]] = $this->security->xss_clean(htmlspecialchars(trim($value)));
+						}
+					}
+				}
+
+				if(!@$array['nome'] || @$array['nome'] == '')
+				{
+					$dados['error'] = 'Algumas informações não foram cadastradas porque o campo nome é obrigatória. Verifique as regras de importação de clientes.';
+				}
+				else
+				{
+					$this->Clientes_model->insertCliente($array);
+				}
+			}
+
+			fclose($handle);
+		}
+
+		$this->load->view('importcsv', $dados);
+	}
 
 	public function buscaclientes()
 	{
@@ -135,22 +189,65 @@ class Clientes extends MX_Controller
 		$this->load->view('modaladdclientes');
 	}
 
+	/*
+	*
+	* CRUD CLIENTE
+	*
+	*/
+
 	public function addcliente()
 	{
-		if ($this->input->post()) {
-			$this->Clientes_model->insertCliente($this->input->post());
-			Set_msg('addcliente');
-			redirect(base_url('clientes'));
+		if ($this->input->post())
+		{
+
+			$this->form_validation->set_rules('nome', 'nome', 'required|trim');
+
+			if($this->form_validation->run() == false)
+			{
+				$return['error'] = validation_errors();
+				
+				echo json_encode($return);
+			}
+			else
+			{
+				foreach ($this->input->post() as $key => $value)
+				{
+					$query[$key] = $this->security->xss_clean(strip_tags(trim($value)));
+				}
+				$this->Clientes_model->insertCliente($query);
+
+				$return['success'] = 'Cliente cadastrado com sucesso!';
+
+				echo json_encode($return);
+			}
 		}
 	}
 
 	public function atualizacliente()
 	{
-		if($this->input->post())
+		if ($this->input->post())
 		{
-			$this->Clientes_model->updateCliente($this->input->post(), array('id'=>$this->input->post()['id']));
-			//Set_msg(alert_success('Editado com sucesso!'));
-			echo 'Cliente editado com sucesso!';
+
+			$this->form_validation->set_rules('nome', 'nome', 'required|trim');
+
+			if($this->form_validation->run() == false)
+			{
+				$return['error'] = validation_errors();
+				
+				echo json_encode($return);
+			}
+			else
+			{
+				foreach ($this->input->post() as $key => $value)
+				{
+					$query[$key] = $this->security->xss_clean(strip_tags(trim($value)));
+				}
+				$this->Clientes_model->updateCliente($query, array('id'=>$query['id']));
+
+				$return['success'] = 'Cliente salvo com sucesso!';
+
+				echo json_encode($return);
+			}
 		}
 	}
 	
@@ -168,7 +265,7 @@ class Clientes extends MX_Controller
 		{
 			$this->Clientes_model->deleteCliente(array('id'=>$this->uri->segment(3)));
 			
-			Set_msg('deletecliente');
+			Set_msg('excluido');
 
 			redirect('clientes');
 		}

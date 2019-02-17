@@ -18,7 +18,7 @@ class Vendas extends MX_Controller
 	}
 
 	public function index()
-	{
+	{ 
 		if($this->session->userdata('filtervendas'))
 		{
 			$where = array('data'=>$this->session->userdata('filtervendas')['data']);
@@ -29,7 +29,7 @@ class Vendas extends MX_Controller
 			$where = null;
 		}
 
-		$dadosdb = $this->Vendas_model->getVendas(null, null, 50);
+		$dadosdb = $this->Vendas_model->getVendas(null,  array('id' => 'DESC'), 50);
 		
 		if($dadosdb)
 		{
@@ -73,75 +73,17 @@ class Vendas extends MX_Controller
 	{
 		$post = $this->input->post();
 
-		$produtos['produtos'] = null;
-		$produtos['quantidade'] = null;
-		$produtos['preco'] = null;
+		$total = 0;
+		$chave = date('Ymdhis');
 
-		$contadorquantidade = 1;
-		foreach ($post as $key => $value)
+		foreach ($post['produtos'] as $key => $value)
 		{
-			if($key == 'quantidade'.$contadorquantidade)
-			{
-				$produtos['quantidade'][] .= $value;
-				$contadorquantidade = $contadorquantidade + 1;
-			}
-		}
-		$contadorproduto = 1;
-		foreach ($post as $key => $value)
-		{
-			if($key == 'produto'.$contadorproduto)
-			{
-				$produtos['produtos'][] .= $value;
-				$contadorproduto = $contadorproduto + 1;
-			}
+			$total += ($post['preco'][$key] * $post['quantidade'][$key]);
+			$this->Listavendas_model->insertLista(array('idcliente'=>$post['cliente'], 'produto'=>$value, 'preco'=>$post['preco'][$key], 'quantidade'=>$post['quantidade'][$key], 'chave'=>$chave));
 		}
 
-		$contadorpreco = 1;
-		foreach ($post as $key => $value)
-		{
-			if($key == 'preco'.$contadorpreco)
-			{
-				$produtos['preco'][] .= $value;
-				$contadorpreco = $contadorpreco + 1;
-			}
-		}
-
-		$linha[] = null;
-
-		foreach ($produtos['produtos'] as $key => $value) {
-			$linha[$key]['produto'] = $value;
-		}
-		foreach ($produtos['quantidade'] as $key => $value) {
-			if($value)
-			{
-			$linha[$key]['quantidade'] = $value;
-			}
-		}
-		foreach ($produtos['preco'] as $key => $value) {
-			if($value)
-			{
-				$linha[$key]['preco'] = $value;
-			}
-		}
-
-		$chavevenda = rand(100000,1000000000);
-
-		$insertvenda = array('idcliente'=>$post['cliente'], 'data'=>date('Y-m-d'), 'status'=>$post['status'], 'obs'=>$post['obs'], 'chave'=>$chavevenda);
-
-		$insertvenda['total'] = 0;
-
-		foreach ($linha as $key => $value) {
-			$value['idcliente'] = $post['cliente'];
-			$value['chave'] = $chavevenda;
-			$insertvenda['total'] =+ $insertvenda['total'] + ($value['preco'] * $value['quantidade']);
-
-			$this->Listavendas_model->insertLista($value);
-		}
-
-		$insertfluxo = array('tipo'=>'Receita', 'data'=>date('Y-m-d'),'descricao'=>'Venda de mercadoria', 'valor'=>$insertvenda['total'], 'SKU'=>$chavevenda);
-
-		$this->Fluxo_model->inFluxo($insertfluxo);
-		$this->Vendas_model->insertVenda($insertvenda);
+		$this->Vendas_model->insertVenda(array('idcliente'=>$post['cliente'], 'data'=>date('Y-m-d'), 'chave'=>0, 'status'=>$post['status'], 'total'=>$total, 'chave'=>$chave));
+		$this->Fluxo_model->inFluxo(array('tipo'=>'Receita', 'data'=>date('Y-m-d'),'descricao'=>'Venda de mercadoria', 'valor'=>$total, 'SKU'=>$chave));
 
 		echo 'Cadastrado com sucesso!';
 	}

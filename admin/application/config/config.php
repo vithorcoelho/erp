@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+date_default_timezone_set('America/Sao_Paulo');
 
-include_once 'config.inc.php';
+include_once '../config/config.inc.php';
 
-
-$config['base_url'] = $urlbase;
+$config['base_url'] = URLBASE_ADMIN;
 
 
 $config['modules_locations'] = array(APPPATH.'modules/' => '../modules/');

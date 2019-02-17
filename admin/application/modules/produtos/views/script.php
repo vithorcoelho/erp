@@ -1,8 +1,4 @@
 <script type="text/javascript">   
-	$('.btn-receita').click(function(){ 
-      loadmodal('#loading-modal', '<?php echo base_url('produtos/modalproduto') ?>');
-  });
-
    $('.filtercliente').click(function(){
     $('.filter-options').toggle();
   });
@@ -54,4 +50,32 @@
         });
 
     });
+</script>
+
+<script type="text/javascript">
+     $("form").submit(function(){
+        var dados = $(this).serialize();
+        $('.modal-footer input').attr('disabled', true);
+        $('.modal-footer input').attr('value', 'Adicionando');
+        $('.form-control').attr('disabled', true);
+        
+        $.ajax({
+         url: '<?php echo base_url('produtos/addproduto') ?>',
+         type: "POST",
+         data: dados,
+         success: function (data) {
+          setTimeout(function(){
+            $('.modal-footer input').attr('disabled', false);
+            $('.modal-footer input').attr('value', 'Cadastrar');
+            $('.form-control').attr('disabled', false);
+            $('#loading-modal input[type=text]').val('');
+            $('.modal').modal('hide');
+      }, 800);
+         },
+         error: function (jqXHR, textStatus, errorThrown) {
+             onError(jqXHR, textStatus, errorThrown);
+         }
+      });
+       return false;
+     });
 </script>

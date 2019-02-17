@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-include_once 'config.inc.php';
+include_once './config/config.inc.php';
 
 
-$config['base_url'] = $urlbase;
+$config['base_url'] = URLBASE;
 
 
 $config['modules_locations'] = array(APPPATH.'modules/' => '../modules/');
