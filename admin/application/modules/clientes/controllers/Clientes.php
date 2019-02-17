@@ -10,23 +10,25 @@ class Clientes extends MX_Controller
 		$this->load->model('Clientes_model');
 
 		login_verify();
+		$this->output->enable_profiler(TRUE);
 	}
 
 	public function index()
 	{
 		$this->p();
 	}
-
+ 
 	public function p()
 	{
 		$dados['titulo'] = 'Clientes';
+		
 		$dados['css'] = array(
 			"libs/datatables-net/media/css/dataTables.bootstrap4.min.css",
 			"libs/datatables-net/extensions/buttons/css/buttons.bootstrap4.min.css",
 			"assets/styles/libs/datatables-net/datatables.min.css",
 			"libs/select2/css/select2.min.css",
 			"assets/styles/libs/select2/select2.min.css");
-		
+
 		if($this->session->userdata('filtercliente'))
 		{
 			$order = $this->session->userdata('filtercliente');
