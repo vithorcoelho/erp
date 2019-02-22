@@ -1,24 +1,26 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-if(!function_exists('set_msg')):
+if(!function_exists('set_message_cookie')):
 	// Seta uma mensagem via session para ser lida posteriosmente
-	function Set_msg($msg = NULL)
+	function set_message_cookie($msg = NULL)
 	{
-		$ci = & get_instance();
-		$ci->session->set_userdata('aviso', $msg);
+		if($msg)
+		{
+			set_cookie('message_cookie', ($msg), 100);
+		}
 	}
 endif;
 
-if(!function_exists('get_msg')):
+if(!function_exists('get_message_cookie')):
 	// Retorna uma mensagem definida pela função set_msg
-	function Get_msg($destroy = TRUE)
+	function get_message_cookie($destroy = TRUE)
 	{
-		$ci = & get_instance();
-		$retorno  = $ci->session->userdata('aviso');
-		if($destroy) $ci->session->unset_userdata('aviso');
+		$msg = (get_cookie('message_cookie'));
 
-		return $retorno;
+		delete_cookie('message_cookie');
+
+		return $msg;
 	}
 endif;
 

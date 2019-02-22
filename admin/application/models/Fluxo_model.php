@@ -1,8 +1,5 @@
 <?php
 
-/**
- * 
- */
 class Fluxo_model extends CI_Model
 {
 	private $tabela = 'erp_fluxocaixa';
@@ -10,6 +7,8 @@ class Fluxo_model extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
+
+		$this->setTable('erp_fluxocaixa' . $this->session->userdata('admin_id'));
 	}
 
 	public function setTable($table)

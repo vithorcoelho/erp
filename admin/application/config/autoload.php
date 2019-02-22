@@ -84,12 +84,13 @@ $autoload['drivers'] = array();
 /*
 | -------------------------------------------------------------------
 |  Auto-load Helper Files
+
 | -------------------------------------------------------------------
 | Prototype:
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'css_html', 'functions', 'login_verify');
+$autoload['helper'] = array('url', 'login_verify', 'cookie', 'functions', 'css_html');
 
 /*
 | -------------------------------------------------------------------

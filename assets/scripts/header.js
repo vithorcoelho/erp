@@ -1,3 +1,18 @@
+function noty(data){
+   $('#msgflutuante span').html(data);
+
+    setTimeout(function() {
+          $('#msgflutuante').addClass('show-msg');
+     }, 0);
+     setTimeout(function() {
+         $('#msgflutuante').addClass('hide-msg');
+     }, 3000);
+     setTimeout(function() {
+         $('#msgflutuante').removeClass('hide-msg');
+         $('#msgflutuante').removeClass('show-msg');
+     }, 3200);
+}
+
 function loadPage(href, content){
     $.ajax({
       url: href,

@@ -13,8 +13,9 @@ class Index extends MX_Controller
 
 	public function index()
 	{
-		$dados['titulo'] = 'Home';
+		$dados['page_titulo'] = 'Home';
 		$dados['titulo_header'] = 'Resumo';
+		
 		$dados['css'] = array(
 			base_url('assets/styles/widgets/panels.min.css')
 		);

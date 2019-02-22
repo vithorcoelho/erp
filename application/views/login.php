@@ -13,7 +13,7 @@
                 <form class="form-container" method="post">
                     <h4 class="ks-header"></h4>
                     <?php
-                            if($msg = get_msg())
+                            if($msg = get_message_cookie())
                             {
                                 echo $msg;
                             }

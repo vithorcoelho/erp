@@ -7,7 +7,7 @@ if(!function_exists('login_verify')):
 		$ci = & get_instance();
 
 		if($ci->session->userdata('logged') != TRUE):
-			Set_msg(alert_red('Acesso restrito! Faça login para continuar'));
+			set_message_cookie(alert_red('Acesso restrito! Faça login para continuar'));
 			redirect('http://localhost/erp/login', 'refresh');
 		endif;
 	}

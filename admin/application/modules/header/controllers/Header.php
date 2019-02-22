@@ -23,7 +23,7 @@ class Header extends MX_Controller
 			'Profile' 		=> array(base_url('assets/img/menu-grid/profile.png'), base_url('#')),
 			'Tickets' 		=> array(base_url('assets/img/menu-grid/ticket.png'), base_url('#')),
 			'Configurações' => array(base_url('assets/img/menu-grid/settings.png'), base_url('#')),
-			'Sair' 			=> array(base_url('assets/img/menu-grid/settings.png'), str_replace('admin/', '', base_url('login/logout')))
+			'Sair' 			=> array(base_url('assets/img/menu-grid/settings.png'), base_url('#'))
 		);
 
 		$dados['nav'] = array(

@@ -1,109 +1,98 @@
 <?php
 class Produtos extends MX_Controller
 {
+	private $tabela_order = array('id'=>'DESC');
+	private $tabela_limit = 50;
+
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->helper(array('form', 'paginacao'));
+
+		$this->load->helper(array('form', 'functions'));
 		$this->load->library('form_validation');
 		$this->load->model(array('Produtos_model'));
 		
 		login_verify();
 	}
-	
+
 	public function index()
 	{
-		$this->p();
-	}
+		$dados['page_titulo'] = 'Produtos';
 
-	public function p()
-	{
-		$dados['titulo'] = 'Produtos';
-
-		if($this->session->userdata('filterproduto'))
-		{
-			$order = $this->session->userdata('filterproduto');
-		}
-		else
-		{
-			$order = array('id'=>'DESC');
-		}
-		if($this->session->userdata('limitproduto'))
-		{
-			$limit = $this->session->userdata('limitproduto');
-		}
-		else
-		{
-			$limit = 5;
-		}
+		$this->CookieFiltroProduto();
 		
-		$rota = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		$dados['paginacao'] = $this->PaginacaoProdutos();
 
-		$dados['paginacao'] = createPaginate('produtos/p/', $this->Produtos_model->countAll(), $limit, 3);
-		$dados['produtos'] = $this->Produtos_model->getProdutos(null, $order, $limit, $rota);
-
+		$rota_start = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		
+		$dados['produtos'] = $this->Produtos_model->getProdutos('id, nome, preco, ref' ,null, $this->tabela_order, $this->tabela_limit, $rota_start);
 		$this->load->view('produtos', $dados);
 	}
 
-
-
-	public function modalproduto()
+	public function CookieFiltroProduto()
 	{
-		// CARREGA MODAL PARA CADASTRAR PRODUTOS: OK
-		$this->load->view('modal-add-produtos');
-	}
-
-
-	public function verproduto ()
-	{
-		// VISUALIZA INFORMAÇÕES DO PRODUTO: FALTA ESTASTICAS DO PRODUTO E ESTOQUE
-		$dados['titulo'] = 'Produto';
-		$dados['produto'] = $this->Produtos_model->getProdutos(array('id'=>$this->uri->segment(3)), null, 1);
+		// Importante: depende de requisição de formulário (order_name, order, limit)
 		
-		if($dados['produto'])
+		if($this->input->post())
 		{
-			$this->load->view('verproduto', $dados);
+			delete_cookie('filtrotabelaprodutos');
+
+			$filtrotabelaprodutos = $this->security->xss_clean($this->input->post());
+
+			set_cookie('filtrotabelaprodutos', serialize($filtrotabelaprodutos), 3000);
+
+			redirect(base_url('produtos'));
 		}
 		else
 		{
-			echo 'Nada encontrado!';
+			if(($filtro_tabela_produtos = unserialize(get_cookie('filtrotabelaprodutos'))))
+			{
+				$this->tabela_order = array($filtro_tabela_produtos['order_name']=>$filtro_tabela_produtos['order']);
+				$this->tabela_limit = $filtro_tabela_produtos['limit'];
+			}
 		}
 	}
 
+	public function PaginacaoProdutos()
+	{
+		$this->load->helper('paginacao');
+		
+		return createPaginate('produtos/index/', $this->Produtos_model->countAll(), $this->tabela_limit, 3);
+	}
 
+	public function DadosProduto()
+	{
+		$dados['titulo'] = 'Produto';
 
-
-
-
-
-
-
-
-	########## METODOS SEM INTERAÇÃO DO USUÁRIO ##############
-
-
-	public function buscaprodutos()
+		$dados['produto'] = $this->Produtos_model->getProdutos(null, array('id'=>$this->uri->segment(3)), null, 1);
+		
+		if($dados['produto'])
+		{
+			$this->load->view('dados_produto', $dados);
+		}
+		else
+		{
+			show_404();
+		}
+	}
+	
+	public function Ajax_BuscaProdutos()
 	{
 		if($this->input->post())
 		{
 			if($this->input->post()['nome'])
 			{
-				$resultado = $this->Produtos_model->getProdutos(null, null, null, null, $this->input->post());
+				$resultado = $this->Produtos_model->getProdutos('id, nome', null, null, null, null, $this->input->post());
 			}
 
 			if(!empty($resultado))
 			{
-				echo '
-				<h5 class="card-header">Resultados da busca:</h5>
-	                <div class="card-block ks-browse ks-scrollable jspScrollable" style="" tabindex="0">
-	                    <table class="table table-striped stacktable small-only">';
-	                        	foreach ($resultado as $v):
-		                    	echo '<tr>
-		                        	<td id="td-nome"><a href="'. base_url('produtos/verproduto/'.$v->id) .'">'. $v->nome .'</a></td>
-		                        </tr>';
-		                    	endforeach;
-		        echo '</tbody>
-	                	</table>';
+				echo '<h5 class="card-header">Resultados da busca:</h5><div class="card-block ks-browse ks-scrollable jspScrollable" style="" tabindex="0">
+	                    <table class="table table-striped stacktable small-only"><tbody>';
+	                        foreach ($resultado as $v):
+		                    echo '<tr><td id="td-nome"><a href="'. base_url('produtos/dados_produto/'.$v->id) .'">'. $v->nome .'</a></td></tr>';
+		                    endforeach;
+		        echo '</tbody></table>';
 	        }
 	        else
 	        {
@@ -112,38 +101,41 @@ class Produtos extends MX_Controller
 		}
 	}
 
-	public function filterproduto()
+	#
+	# CRUD ERP PRODUTO
+	#
+	
+	public function Ajax_CadastrarProduto()
 	{
-		if($this->input->post())
+		if ($this->input->post())
 		{
-			if(!$this->session->userdata('filterproduto') || !$this->session->userdata('limitproduto'))
+			$this->form_validation->set_rules('nome', 'nome', 'required|trim');
+			$this->form_validation->set_rules('preco', 'preço', 'required|trim');
+
+			if($this->form_validation->run() == false)
 			{
-				$this->session->set_userdata('limitproduto', $this->input->post()['limit']);
-				$this->session->set_userdata('filterproduto', array($this->input->post()['order_name']=>$this->input->post()['order']));
+				$return['error'] = validation_errors();
+				
+				echo json_encode($return);
 			}
 			else
 			{
-				$this->session->unset_userdata('filterproduto');
-				$this->session->set_userdata('filterproduto', array($this->input->post()['order_name']=>$this->input->post()['order']));
+				foreach ($this->input->post() as $key => $value)
+				{
+					$query[$key] = $this->security->xss_clean(strip_tags(trim($value)));
+				}
 
-				$this->session->unset_userdata('limitproduto');
-				$this->session->set_userdata('limitproduto', $this->input->post()['limit']);
+				$return['id'] = $this->Produtos_model->insertProduto($query);
+
+				$return['success'] = 'Produto cadastrado com sucesso!';
+
+				echo json_encode($return);
 			}
-		}
-		redirect(base_url('produtos'));
-	}
-
-	public function addproduto()
-	{
-		// CADASTRAD PRODUTOS: ! FALTA VALIDAÇÃO DOS DADOS !
-		if ($this->input->post())
-		{
-			
-			$dados = $this->input->post();
-
-			$insert = $this->Produtos_model->insertProduto($dados);
+			exit;
 
         	# Realiza o upload da imagem
+        	# À IMPLEMENTAR:
+        	
         	$this->load->library('upload', config_upload('./assets/images/catalogo', $insert));
 
 	        if ($this->upload->do_upload('img'))
@@ -154,63 +146,56 @@ class Produtos extends MX_Controller
 	            if(!$dados_upload)
 	            {
 	            	$msg = $this->upload->display_errors();
-
-	            	Set_msg(alert_red($msg));
 	            }
 	        }
-			redirect('produtos');
 		}
 	}
 
-	public function atualizaproduto()
+	public function Ajax_AtualizarProduto()
 	{
-		// FALTA A VALIDAÇÃO DOS DADOS
-		if($this->input->post())
+		if ($this->input->post())
 		{
-			$dados = $this->input->post();
-			$dados['loja'] = (isset($this->input->post()['loja'])) ? ($dados['loja']) : 0;
+			$this->form_validation->set_rules('nome', 'nome', 'required|trim');
+			$this->form_validation->set_rules('preco', 'preço', 'required|trim');
 
-			# Realiza o upload da imagem
-        	$this->load->library('upload', config_upload('./assets/images/catalogo', $dados['id']));
+			if($this->form_validation->run() == false)
+			{
+				$return['error'] = validation_errors();
+				
+				echo json_encode($return);
+			}
+			else
+			{
+				foreach ($this->input->post() as $key => $value)
+				{
+					$query[$key] = $this->security->xss_clean(strip_tags(trim($value)));
+				}
+				$this->Produtos_model->updateProduto($query, array('id'=>$query['id']));
 
-	        if ($this->upload->do_upload('img'))
-	        {     
-	        	$dados_upload = $this->upload->data();
-	        	clearstatcache();
+				$return['success'] = 'Produto salvo com sucesso!';
 
-	            if(!$dados_upload)
-	            {
-	            	$msg = $this->upload->display_errors();
-
-	            	Set_msg(alert_red($msg));
-	            }
-	        }
-
-			$this->Produtos_model->updateProduto($dados, array('id'=>$this->input->post()['id']));
-
-			Set_msg(alert_success('Produto editado com sucesso!'));
-
-			redirect('produtos/verproduto/'.$dados['id']);
-		}
-		else
-		{
-			redirect('produtos');
+				echo json_encode($return);
+			}
 		}
 	}
 
-	public function deletandoproduto()
+	public function DeletarProduto()
 	{
 		$this->load->model('Listavendas_model');
 
-		$produto = $this->Produtos_model->getProdutos(array('id'=>$this->uri->segment(3)), null, 1);
+		$produto = $this->Produtos_model->getProdutos('id, nome', array('id'=>$this->uri->segment(3)), null, 1);
 
 		if($this->Listavendas_model->getLista(array('produto'=>$produto[0]->nome)))
 		{
-			Set_msg(alert_red('Não foi possivel excluir, já existem vendas realizadas com este produto'));
-			redirect('produtos/verproduto/'.$this->uri->segment(3));
+			set_message_cookie('<script>msg_flutuante("Não foi possivel excluir, já existem vendas realizadas com este produto", "error")</script>');
+
+			redirect('produtos/dadosproduto/'.$this->uri->segment(3));
+
+			// Verifica se existe vendas com este produto, caso existir ele não deleta e retorna um mensagem em cookie
 		}
 		else
 		{
+			set_message_cookie('<script>msg_flutuante("Produto excluido com sucesso", "success")</script>');
 			$this->Produtos_model->deleteProduto(array('id'=>$produto[0]->id));
 			redirect('produtos');
 		}

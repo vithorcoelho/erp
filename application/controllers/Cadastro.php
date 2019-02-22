@@ -34,6 +34,11 @@ class Cadastro extends MX_Controller {
 		{
 			$dados_form = $this->input->post();
 
+			$this->session->unset_userdata('logged');
+			$this->session->unset_userdata('admin_id');
+			$this->session->unset_userdata('admin_email');
+			$this->session->unset_userdata('admin_nome');
+
 			if($this->Cadastro_model->getUser('email', array('email'=>$dados_form['email'])))
 			{
 				Set_msg(alert_red('O email solicitado já existe!'));

@@ -36,7 +36,7 @@ class Pdv extends MX_Controller
 	{
 		if($this->input->post()['idproduto'])
 		{
-			$produtos = $this->Produtos_model->getProdutos(array('id'=>$this->input->post()['idproduto']));
+			$produtos = $this->Produtos_model->getProdutos(null, array('id'=>$this->input->post()['idproduto']));
 
 			$retorno['dados'] = '';
 
@@ -44,7 +44,7 @@ class Pdv extends MX_Controller
 			{
 				$retorno['dados'] .= 
 				'<tr class='.$value->id.'>
-				<td width=200><input type="hidden" value='.$value->nome.' name="produtos[]">'.$value->nome.'</td>
+				<td width=200><input type="hidden" value="'.$value->nome.'" name="produtos[]">'.$value->nome.'</td>
 				<td><input type="text" id="preco" value="'.$value->preco.'" class="form-control" name="preco[]"></td>
 				<td><input type="text" class="qtdproduto form-control" value="1" name="quantidade[]"></td>	
 				<td>'.$value->preco.'</td>

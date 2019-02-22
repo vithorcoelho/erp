@@ -1,160 +1,99 @@
 <?php
+
 class Clientes extends MX_Controller
 {
+	private $tabela_order = array('id'=>'DESC');
+	private $tabela_limit = 50;
+
 	function __construct()
 	{
 		parent::__construct();
 
-		$this->load->helper(array('form'));
+		$this->load->helper(array('form', 'functions'));
 		$this->load->library(array('form_validation', 'security'));
 		$this->load->model('Clientes_model');
 
 		login_verify();
-		$this->output->enable_profiler(TRUE);
 	}
 
 	public function index()
 	{
-		$this->p();
-	}
- 
-	public function p()
-	{
-		$dados['titulo'] = 'Clientes';
+		$dados['page_titulo'] = 'Clientes';
+
+		$this->CookieFiltroClientes();
 		
-		$dados['css'] = array(
-			"libs/datatables-net/media/css/dataTables.bootstrap4.min.css",
-			"libs/datatables-net/extensions/buttons/css/buttons.bootstrap4.min.css",
-			"assets/styles/libs/datatables-net/datatables.min.css",
-			"libs/select2/css/select2.min.css",
-			"assets/styles/libs/select2/select2.min.css");
+		$dados['paginacao'] = $this->PaginacaoClientes();
 
-		if($this->session->userdata('filtercliente'))
-		{
-			$order = $this->session->userdata('filtercliente');
-		}
-		else
-		{
-			$order = array('id'=>'DESC');
-		}
-		if($this->session->userdata('limitcliente'))
-		{
-			$limit = $this->session->userdata('limitcliente');
-		}
-		else
-		{
-			$limit = 50;
-		}
+		$rotaStart = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
-		$this->load->helper('paginacao');
-		
-		$rota = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-		$dados['paginacao'] = createPaginate('clientes/p/', $this->Clientes_model->countAll(), $limit, 3);
-		$dados['clientes'] = $this->Clientes_model->getClientes(null, $order, $limit, $rota);
+		$dados['clientes'] = $this->Clientes_model->getClientes(array('id', 'nome', 'email', 'telefone', 'endereco'), null, $this->tabela_order, $this->tabela_limit, $rotaStart);
 
 		$this->load->view('clientes', $dados);
 	}
 
-	public function vercliente()
+	public function PaginacaoClientes()
 	{
-		$dados['titulo'] = 'Clientes';
-		$dados['cliente'] = $this->Clientes_model->getClientes(array('id'=>$this->uri->segment(3)), null, 1);
+		$this->load->helper('paginacao');
 
-		if($dados['cliente'])
+		return createPaginate('clientes/index/', $this->Clientes_model->countAll(), $this->tabela_limit, 3);
+	}
+
+	public function CookieFiltroClientes()
+	{
+		if($this->input->post())
 		{
-			$this->load->view('viewcliente', $dados);
+			delete_cookie('filtrotabelaclientes');
+
+			$filtrotabelaclientes = $this->security->xss_clean($this->input->post());
+
+			set_cookie('filtrotabelaclientes', serialize($filtrotabelaclientes), 3000);
+
+			redirect(base_url('clientes'));
 		}
 		else
 		{
-			echo 'Nada encontrado';
-		}
-	}
-
-	/*
-	*
-	*
-	* Metodos sem interação com usuário
-	*
-	*	
-	*/
-
-	public function importplanilha()
-	{
-		$dados['titulo'] = 'Importar lista de clientes';
-		
-		if(!empty($_FILES['file']))
-		{
-			//readfile($_FILES['file']['tmp_name']);
-			$handle = fopen($_FILES['file']['tmp_name'], "r");
-			$csv = fgetcsv($handle, 1000, ";");
-
-			$table = array(
-					'nome',
-					'email',
-					'cpf',
-					'cidade',
-					'endereco',
-					'telefone',
-					'celular');
-
-			while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+			if(($filtro_tabela_clientes = unserialize(get_cookie('filtrotabelaclientes'))))
 			{
-				foreach ($data as $key => $value)
-				{
-					$csv[$key] = strtolower($csv[$key]);
-
-					foreach ($table as $t)
-					{
-						if($csv[$key] == strtolower($t))
-						{
-							$array[$csv[$key]] = $this->security->xss_clean(htmlspecialchars(trim($value)));
-						}
-					}
-				}
-
-				if(!@$array['nome'] || @$array['nome'] == '')
-				{
-					$dados['error'] = 'Algumas informações não foram cadastradas porque o campo nome é obrigatória. Verifique as regras de importação de clientes.';
-				}
-				else
-				{
-					$this->Clientes_model->insertCliente($array);
-				}
+				$this->tabela_order = array($filtro_tabela_clientes['order_name']=>$filtro_tabela_clientes['order']);
+				$this->tabela_limit = $filtro_tabela_clientes['limit'];
 			}
-
-			fclose($handle);
 		}
-
-		$this->load->view('importcsv', $dados);
 	}
+	
+	public function DadosCliente()
+	{
+		$dados['page_titulo'] = 'Cliente';
+		$dados['cliente'] = $this->Clientes_model->getClientes(null, array('id'=>$this->uri->segment(3)), null, 1);
 
-	public function buscaclientes()
+		if($dados['cliente'])
+		{
+			$this->load->view('dadoscliente', $dados);
+		}
+		else
+		{
+			show_404();
+		}
+	}
+	
+	public function Ajax_BuscarClientes()
 	{
 		if($this->input->post())
 		{
 			if($this->input->post()['nome'])
 			{
-				$resultado = $this->Clientes_model->getClientes(null, null, null, null, $this->input->post());
+				$resultado = $this->Clientes_model->getClientes(array('id', 'nome', 'email', 'telefone', 'endereco'), null, null, 100, 0, $this->security->xss_clean($this->input->post()));
 			}
 
 			if(!empty($resultado))
 			{
-				echo '
-				
-				<h5 class="card-header">Resultados da busca:</h5>
-	                <div class="card-block ks-browse ks-scrollable jspScrollable" style="" tabindex="0">
-	                    <table class="table table-striped stacktable small-only">';
-	                        	foreach ($resultado as $v):
-		                    	echo '<tr>
-		                        	<td id="td-nome"><a href="'. base_url('clientes/vercliente/'.$v->id) .'">'. $v->nome .'</a></td>
-		                        	<td id="td-email">'. $v->email  .'</td>
-		                        	<td id="td-telefone">'. $v->telefone .'</td>
-		                        	<td id="td-endereco">'. $v->endereco .'</td>
-		                        </tr>';
-		                    	endforeach;
-		        echo '</tbody>
-	                	</table>';
+				echo '<h5 class="card-header">Resultados da busca:</h5><div class="card-block ks-browse ks-scrollable jspScrollable"><table class="table table-striped stacktable small-only">';
+	               	foreach ($resultado as $v):
+			           	echo '<tr><td><a href="'. base_url('clientes/dados_cliente/'.$v->id) .'">'. $v->nome .'</a></td>
+			               	<td>'. $v->email  .'</td>
+			               	<td>'. $v->telefone .'</td>
+			               	<td>'. $v->endereco .'</td></tr>';
+		           	endforeach;
+		        echo '</tbody></table>';
 	        }
 	        else
 	        {
@@ -163,52 +102,21 @@ class Clientes extends MX_Controller
 		}
 	}
 
-	public function filtercliente()
-	{
-		if($this->input->post())
-		{
-			if(!$this->session->userdata('filtercliente') || !$this->session->userdata('limitcliente'))
-			{
-				$this->session->set_userdata('limitcliente', $this->input->post()['limit']);
-				$this->session->set_userdata('filtercliente', array($this->input->post()['order_name']=>$this->input->post()['order']));
-			}
-			else
-			{
-				$this->session->unset_userdata('filtercliente');
-				$this->session->set_userdata('filtercliente', array($this->input->post()['order_name']=>$this->input->post()['order']));
+	#
+	# CRUD ERP CLIENTE:
+	#
 
-				$this->session->unset_userdata('limitcliente');
-				$this->session->set_userdata('limitcliente', $this->input->post()['limit']);
-			}
-		}
-		redirect(base_url('clientes'));
-	}
-
-	public function modalcliente()
-	{
-		$this->output->cache(7200);
-
-		$this->load->view('modaladdclientes');
-	}
-
-	/*
-	*
-	* CRUD CLIENTE
-	*
-	*/
-
-	public function addcliente()
+	public function Ajax_CadastrarCliente()
 	{
 		if ($this->input->post())
 		{
-
 			$this->form_validation->set_rules('nome', 'nome', 'required|trim');
 
 			if($this->form_validation->run() == false)
 			{
 				$return['error'] = validation_errors();
 				
-				echo json_encode($return);
+				echo json_encode($return); 
 			}
 			else
 			{
@@ -216,7 +124,8 @@ class Clientes extends MX_Controller
 				{
 					$query[$key] = $this->security->xss_clean(strip_tags(trim($value)));
 				}
-				$this->Clientes_model->insertCliente($query);
+
+				$return['id'] = $this->Clientes_model->insertCliente($query); 
 
 				$return['success'] = 'Cliente cadastrado com sucesso!';
 
@@ -225,7 +134,7 @@ class Clientes extends MX_Controller
 		}
 	}
 
-	public function atualizacliente()
+	public function Ajax_AtualizarCliente()
 	{
 		if ($this->input->post())
 		{
@@ -253,22 +162,22 @@ class Clientes extends MX_Controller
 		}
 	}
 	
-	public function deletandocliente()
+	public function DeletarCliente()
 	{
 		$this->load->model('Vendas_model');
 
-		if($this->Vendas_model->getVendas(array('idcliente'=>$this->uri->segment(3))))
+		if($this->Vendas_model->getVendas(array('id', 'idcliente'), array('idcliente'=>$this->uri->segment(3))))
 		{
-			Set_msg(alert_red('Não foi possivel excluir, já existem vendas realizadas com este cliente'));
+			set_message_cookie('<script>msg_flutuante("Não foi possivel excluir, já existem vendas realizadas com este cliente", "error")</script>');
 
-			redirect('clientes/vercliente/'.$this->uri->segment(3));
+			redirect('clientes/dadoscliente/'.$this->uri->segment(3));
+
+			// !IMPORTANTE! Verifica se existe vendas com este cliente, caso existir ele não deleta e retorna um mensagem em cookie
 		}
 		else
 		{
 			$this->Clientes_model->deleteCliente(array('id'=>$this->uri->segment(3)));
-			
-			Set_msg('excluido');
-
+			set_message_cookie('<script>msg_flutuante("Cliente excluido com sucesso", "success")</script>');
 			redirect('clientes');
 		}
 	}

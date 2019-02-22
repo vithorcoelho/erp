@@ -41,7 +41,7 @@ class Listavendas_model extends CI_Model
 		$this->db->delete($this->tabela, $reference);
 	}
 
-	public function insertLista(array $dadostabela = null)
+	public function insertLista($dadostabela)
 	{
 		if(!$dadostabela)
 		{

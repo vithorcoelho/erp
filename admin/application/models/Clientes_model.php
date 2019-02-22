@@ -41,8 +41,12 @@ class Clientes_model extends CI_Model
 			}
 		}
 	}
-	public function getClientes($where = null, $ordem = array('id'=>'ASC'), $limit = null, $start = null, $like = null)
+	public function getClientes($select = null, $where = null, $ordem = array('id'=>'ASC'), $limit = null, $start = null, $like = null)
 	{
+		if($select)
+		{
+			$this->db->select($select);
+		}
 		if($where)
 		{
 			$this->db->where($where);

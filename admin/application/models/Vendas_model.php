@@ -16,11 +16,20 @@ class Vendas_model extends CI_Model
 		$this->tabela = $table;
 	}
 
-	public function getVendas($where = null, $ordem = array('id'=>'ASC'), $limit = null)
+	public function getVendas($select = null, $where = null, $ordem = array('id'=>'ASC'), $limit = null, $start = null)
 	{
+		if($select)
+		{
+			$this->db->select($select);
+		}
 		if($limit)
 		{
 			$this->db->limit($limit);
+
+			if($start)
+			{
+				$this->db->limit($limit, $start);
+			}
 		}
 		if($where)
 		{

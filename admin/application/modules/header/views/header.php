@@ -32,9 +32,6 @@
     </div>
 </nav>
 
-<script src="<?php echo str_replace('admin/', '', base_url()) ?>libs/jquery/jquery.min.js"></script>
-<script src="<?php echo base_url('assets/scripts/header.js') ?>" type="text/javascript"></script>
-
 <div id="msg">
     <div id="msgflutuante">
         <i class="la la-check-circle"></i><span></span>
